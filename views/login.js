@@ -7,10 +7,8 @@ import { Feather } from '@expo/vector-icons';
 
 
 export default function App() {
-
+  
   const[click, setClick] =useState(true)
-  const[email, setEmail] =useState('');
-  const[senha, setSenha] =useState('');
   const[textBotao, setTextBotao] = useState('Cadastro')
   const[mode, setMode] = useState(true)
 
@@ -23,6 +21,10 @@ export default function App() {
   const [label, setLabel ] = useState('#e8e8e8')
   const [backgroundBotao, setBackgroundBotao ] = useState('#e8e8e8')
   const [textoBotao, setTextoBotao ] = useState('#e8e8e8')
+
+  const [alerta, setAlerta] = useState('Você está usando um Email invalido!')
+  const[email, setEmail] =useState('');
+  const[senha, setSenha] =useState('');
 
   function mudarMode(){
     
@@ -60,6 +62,16 @@ export default function App() {
 
     }
   }*/
+  function validEmail(){
+    let pos = email.indexOf('@')
+    if(pos==-1){
+      setAlerta('Você está usando um Email invalido!')
+      return false
+    } else{
+      setAlerta('')
+      return true
+    }
+  }
     
     return(
       <Fragment>
@@ -86,20 +98,23 @@ export default function App() {
 
             <View style={styles.backgroundInput}>
               <Entypo name="mail"size={24}color="black"/>
-              <TextInput style={styles.input}placeholder="Email:"value={email}onChangeText={setEmail}/>
+              <TextInput style={styles.input}placeholder="Email:"value={email} onChangeText={setEmail}/>
             </View>
 
             <View style={styles.backgroundInput}>
               <FontAwesome5 name="key"size={24}color="black"/>
-              <TextInput style={styles.input}placeholder="Senha:"value={senha}onChangeText={setSenha}/>
+              <TextInput style={styles.input}placeholder="Senha:"value={senha} onChangeText={setSenha}/>
             </View>
-
+            <View style={styles.forgot}>
+              <Text style={styles.textEmail}>{alerta}</Text>
+            </View>
+            
             <TouchableOpacity style={styles.forgot}>
-              <Text style={styles.textForgot}>Já possui uma conta?</Text>
+              <Text style={styles.textForgot}>Não possui uma conta?</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.cadastro}>
-              <Text style={styles.cadastroText}>Sign Up</Text>
+            <TouchableOpacity style={styles.cadastro} onPress={validEmail}>
+              <Text style={styles.cadastroText}>Sign In</Text>
             </TouchableOpacity>
           </View>
             
@@ -134,7 +149,7 @@ logo:{
   fontSize:40,
   fontStyle:'italic',
   margin:40,
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 },
 cadastro:{
   backgroundColor:'#109DFA',
@@ -174,15 +189,9 @@ icon:{
   justifyContent:'center',
   borderRadius:10, 
 },
-haveAccount:{
-  justifyContent:'flex-end',
-  alignItems:'center',
-  backgroundColor:'black'
-},
-textHaveAccount:{
-  color:'white',
+textEmail:{
   fontWeight: 'bold',
-  paddingTop:5,
-  
-}
+  color:'#BB5959'
+},
+
 });
